@@ -1,7 +1,11 @@
 export const runtime = "edge";
 
+// Vercel Edge automatically injects env vars by name
+const SECRET_KEY = SECRET_KEY;
+const WEBHOOK_URL = WEBHOOK_URL;
+
 async function sendWebhook(msg: string) {
-  await fetch(process.env.WEBHOOK_URL!, {
+  await fetch(WEBHOOK_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: msg })
@@ -44,7 +48,7 @@ UA: \`${ua}\``
     return new Response("INVALID TOKEN", { status: 401 });
   }
 
-  const payload = `${token}|${expires}|${process.env.SECRET_KEY}`;
+  const payload = `${token}|${expires}|${SECRET_KEY}`;
   const hash = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(payload)
